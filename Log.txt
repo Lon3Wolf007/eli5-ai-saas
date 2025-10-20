@@ -1,0 +1,8 @@
+Day 1: 
+
+Like I'm 5 gives a short and easy explanation whereas the expert and college level tend to make the answer longer and I'm not able to read the generated answer properly, everything is clumsy and packed together tightly. This feels like I'm just reading unwanted stuff.
+
+It needs to be shorter and be able to explain in shorter lengths and also it need to take some space if it doesn't affect the number of tokens used. Too much information.
+
+It need to use more of technical terms in the expert level without making it childish, its like Like I'm 5 and College level is combined, Expert level should be hard to understand and it can be used to sound fancy among your friends, expert level beats  the idea of like I'm 5,
+it already has the ability to explain to a child. Expert level means it should be understood by experts and to sound fancy while pitching to someone. 

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ELI5.ai - Your Friendly AI Tutor</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 800px;
+        width: 100%;
+        padding: 40px;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        color: #667eea;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      .header p {
+        color: #666;
+        font-size: 1.1em;
+      }
+
+      .emoji {
+        font-size: 3em;
+        margin-bottom: 10px;
+      }
+
+      .input-section {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 1.1em;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 1em;
+        font-family: inherit;
+        resize: vertical;
+        min-height: 100px;
+        transition: border-color 0.3s;
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .complexity-section {
+        margin-bottom: 20px;
+      }
+
+      .complexity-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .complexity-btn {
+        flex: 1;
+        min-width: 100px;
+        padding: 12px 20px;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.9em;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      .complexity-btn:hover {
+        border-color: #667eea;
+        transform: translateY(-2px);
+      }
+
+      .complexity-btn.active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+      }
+
+      .explain-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.2em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .explain-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .explain-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .result-section {
+        margin-top: 30px;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        display: none;
+      }
+
+      .result-section.show {
+        display: block;
+        animation: fadeIn 0.5s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      .result-title {
+        color: #667eea;
+        font-size: 1.3em;
+        font-weight: 600;
+      }
+
+      .tokens-badge {
+        background: #667eea;
+        color: white;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.9em;
+      }
+
+      .explanation {
+        color: #333;
+        line-height: 1.8;
+        font-size: 1.05em;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 30px;
+        display: none;
+      }
+
+      .loading.show {
+        display: block;
+      }
+
+      .spinner {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #667eea;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 15px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .error {
+        background: #fee;
+        color: #c33;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+        display: none;
+      }
+
+      .error.show {
+        display: block;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        color: #666;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="emoji">🧠✨</div>
+        <h1>ELI5.ai</h1>
+        <p>Complex topics made simple - Your friendly AI tutor!</p>
+      </div>
+
+      <div class="input-section">
+        <label for="topic">What would you like to learn about?</label>
+        <textarea
+          id="topic"
+          placeholder="e.g., How do black holes work? What is quantum computing? Why is the sky blue?"
+        ></textarea>
+      </div>
+
+      <div class="complexity-section">
+        <label>How simple should the explanation be?</label>
+        <div class="complexity-buttons">
+          <button class="complexity-btn active" data-level="eli5">
+            👶 Like I'm 5
+          </button>
+          <button class="complexity-btn" data-level="eli10">
+            🧒 Like I'm 10
+          </button>
+          <button class="complexity-btn" data-level="teen">
+            🎓 Teen Level
+          </button>
+          <button class="complexity-btn" data-level="college">
+            🎯 College
+          </button>
+          <button class="complexity-btn" data-level="expert">🚀 Expert</button>
+        </div>
+      </div>
+
+      <button class="explain-btn" id="explainBtn">🎯 Explain It To Me!</button>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>AI is thinking... 🤔</p>
+      </div>
+
+      <div class="error" id="error"></div>
+
+      <div class="result-section" id="result">
+        <div class="result-header">
+          <div class="result-title">📚 Your Explanation:</div>
+          <div class="tokens-badge" id="tokens">0 tokens</div>
+        </div>
+        <div class="explanation" id="explanation"></div>
+      </div>
+
+      <div class="footer">
+        Made with ❤️ using FastAPI + OpenAI • Your SaaS Project 🚀
+      </div>
+    </div>
+
+    <script>
+      // Get all the elements we need
+      const topicInput = document.getElementById("topic");
+      const explainBtn = document.getElementById("explainBtn");
+      const loading = document.getElementById("loading");
+      const error = document.getElementById("error");
+      const result = document.getElementById("result");
+      const explanation = document.getElementById("explanation");
+      const tokensDisplay = document.getElementById("tokens");
+      const complexityButtons = document.querySelectorAll(".complexity-btn");
+
+      // Keep track of selected complexity
+      let selectedComplexity = "eli5";
+
+      // Handle complexity button clicks
+      complexityButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          // Remove active class from all buttons
+          complexityButtons.forEach((b) => b.classList.remove("active"));
+          // Add active class to clicked button
+          btn.classList.add("active");
+          // Update selected complexity
+          selectedComplexity = btn.dataset.level;
+        });
+      });
+
+      // Handle explain button click
+      explainBtn.addEventListener("click", async () => {
+        // Get the topic
+        const topic = topicInput.value.trim();
+
+        // Validate input
+        if (!topic) {
+          showError("Please enter a topic you want to learn about!");
+          return;
+        }
+
+        // Hide error and result
+        hideError();
+        hideResult();
+
+        // Show loading
+        showLoading();
+        explainBtn.disabled = true;
+
+        try {
+          // Call the backend API
+          const response = await fetch("http://localhost:8000/explain", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              topic: topic,
+              complexity: selectedComplexity,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.detail || "Something went wrong!");
+          }
+
+          // Show the result
+          explanation.textContent = data.explanation;
+          tokensDisplay.textContent = `${data.tokens_used} tokens`;
+          showResult();
+        } catch (err) {
+          showError("Oops! " + err.message);
+        } finally {
+          // Hide loading and re-enable button
+          hideLoading();
+          explainBtn.disabled = false;
+        }
+      });
+
+      // Allow pressing Enter to submit (with Shift+Enter for new line)
+      topicInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          explainBtn.click();
+        }
+      });
+
+      // Helper functions
+      function showLoading() {
+        loading.classList.add("show");
+      }
+
+      function hideLoading() {
+        loading.classList.remove("show");
+      }
+
+      function showError(message) {
+        error.textContent = message;
+        error.classList.add("show");
+      }
+
+      function hideError() {
+        error.classList.remove("show");
+      }
+
+      function showResult() {
+        result.classList.add("show");
+      }
+
+      function hideResult() {
+        result.classList.remove("show");
+      }
+    </script>
+  </body>
+</html>
