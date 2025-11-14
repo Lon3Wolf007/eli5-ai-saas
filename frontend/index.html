@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ELI5.ai - Your Friendly AI Tutor</title>
+    <title>ELI5.ai - AI Learning Assistant</title>
     <style>
       * {
         margin: 0;
@@ -12,145 +12,311 @@
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          "Helvetica", "Arial", sans-serif;
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        color: #fff;
         min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 20px;
+        overflow-x: hidden;
+      }
+
+      .background-grid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.03) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .glow {
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 122, 255, 0.15) 0%,
+          transparent 70%
+        );
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      .glow:nth-child(2) {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(88, 86, 214, 0.1) 0%,
+          transparent 70%
+        );
+        animation-delay: -10s;
+        animation-duration: 15s;
+        right: 0;
+        top: 50%;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(100px, -100px);
+        }
+        50% {
+          transform: translate(-50px, 100px);
+        }
+        75% {
+          transform: translate(150px, 50px);
+        }
       }
 
       .container {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        max-width: 800px;
-        width: 100%;
-        padding: 40px;
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
       }
 
       .header {
         text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 60px;
+        animation: fadeInUp 0.8s ease;
       }
 
-      .header h1 {
-        color: #667eea;
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo {
         font-size: 2.5em;
-        margin-bottom: 10px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+        letter-spacing: -1px;
       }
 
-      .header p {
-        color: #666;
-        font-size: 1.1em;
+      .tagline {
+        font-size: 1.2em;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 400;
+        letter-spacing: -0.3px;
       }
 
-      .emoji {
-        font-size: 3em;
-        margin-bottom: 10px;
+      .main-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.8s ease 0.2s both;
       }
 
-      .input-section {
-        margin-bottom: 20px;
+      .input-group {
+        margin-bottom: 32px;
       }
 
       label {
         display: block;
-        color: #333;
-        font-weight: 600;
-        margin-bottom: 8px;
-        font-size: 1.1em;
+        font-size: 0.95em;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 12px;
+        font-weight: 500;
+        letter-spacing: -0.2px;
       }
 
       textarea {
         width: 100%;
-        padding: 15px;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
+        padding: 16px 20px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        color: #fff;
         font-size: 1em;
         font-family: inherit;
-        resize: vertical;
-        min-height: 100px;
-        transition: border-color 0.3s;
+        resize: none;
+        min-height: 120px;
+        transition: all 0.3s ease;
       }
 
       textarea:focus {
         outline: none;
-        border-color: #667eea;
+        background: rgba(255, 255, 255, 0.12);
+        border-color: #007aff;
+        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
       }
 
-      .complexity-section {
-        margin-bottom: 20px;
+      textarea::placeholder {
+        color: rgba(255, 255, 255, 0.4);
       }
 
-      .complexity-buttons {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
+      .complexity-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        margin-bottom: 32px;
       }
 
       .complexity-btn {
-        flex: 1;
-        min-width: 100px;
-        padding: 12px 20px;
-        border: 2px solid #e0e0e0;
-        background: white;
-        border-radius: 10px;
-        cursor: pointer;
+        padding: 14px 20px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: rgba(255, 255, 255, 0.7);
         font-size: 0.9em;
-        font-weight: 600;
-        transition: all 0.3s;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
       }
 
       .complexity-btn:hover {
-        border-color: #667eea;
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
         transform: translateY(-2px);
       }
 
       .complexity-btn.active {
-        background: #667eea;
-        color: white;
-        border-color: #667eea;
+        background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
+        border-color: transparent;
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
       }
 
-      .explain-btn {
+      .submit-btn {
         width: 100%;
-        padding: 15px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+        padding: 18px;
+        background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
         border: none;
-        border-radius: 10px;
-        font-size: 1.2em;
+        border-radius: 12px;
+        color: #fff;
+        font-size: 1.05em;
         font-weight: 600;
         cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        letter-spacing: -0.2px;
       }
 
-      .explain-btn:hover:not(:disabled) {
+      .submit-btn:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4);
       }
 
-      .explain-btn:disabled {
-        opacity: 0.6;
+      .submit-btn:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      .submit-btn:disabled {
+        opacity: 0.5;
         cursor: not-allowed;
       }
 
-      .result-section {
-        margin-top: 30px;
-        padding: 25px;
-        background: #f8f9fa;
-        border-radius: 10px;
+      .loading {
+        text-align: center;
+        padding: 40px;
         display: none;
       }
 
-      .result-section.show {
+      .loading.show {
         display: block;
-        animation: fadeIn 0.5s;
+        animation: fadeIn 0.3s ease;
       }
 
       @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .loader {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top-color: #007aff;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 16px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.95em;
+      }
+
+      .error {
+        background: rgba(255, 59, 48, 0.15);
+        border: 1px solid rgba(255, 59, 48, 0.3);
+        color: #ff3b30;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+        display: none;
+        animation: shake 0.5s ease;
+      }
+
+      .error.show {
+        display: block;
+      }
+
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-10px);
+        }
+        75% {
+          transform: translateX(10px);
+        }
+      }
+
+      .result-card {
+        margin-top: 32px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 32px;
+        display: none;
+      }
+
+      .result-card.show {
+        display: block;
+        animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      @keyframes slideUp {
         from {
           opacity: 0;
           transform: translateY(20px);
@@ -165,140 +331,110 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #e0e0e0;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       }
 
       .result-title {
-        color: #667eea;
-        font-size: 1.3em;
+        font-size: 1.1em;
         font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
       }
 
-      .tokens-badge {
-        background: #667eea;
-        color: white;
-        padding: 5px 15px;
+      .token-badge {
+        background: rgba(0, 122, 255, 0.15);
+        color: #007aff;
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.9em;
+        font-size: 0.85em;
+        font-weight: 500;
       }
 
-      .explanation {
-        color: #333;
+      .explanation-text {
+        color: rgba(255, 255, 255, 0.8);
         line-height: 1.8;
-        font-size: 1.05em;
-      }
-
-      .loading {
-        text-align: center;
-        padding: 30px;
-        display: none;
-      }
-
-      .loading.show {
-        display: block;
-      }
-
-      .spinner {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #667eea;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 15px;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      .error {
-        background: #fee;
-        color: #c33;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 15px;
-        display: none;
-      }
-
-      .error.show {
-        display: block;
+        font-size: 1.02em;
+        letter-spacing: -0.1px;
       }
 
       .footer {
         text-align: center;
-        margin-top: 30px;
-        color: #666;
+        margin-top: 48px;
+        color: rgba(255, 255, 255, 0.4);
         font-size: 0.9em;
+      }
+
+      @media (max-width: 768px) {
+        .main-card {
+          padding: 32px 24px;
+        }
+
+        .complexity-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .logo {
+          font-size: 2em;
+        }
       }
     </style>
   </head>
   <body>
+    <div class="background-grid"></div>
+    <div class="glow"></div>
+    <div class="glow"></div>
+
     <div class="container">
-      <div class="header">
-        <div class="emoji">🧠✨</div>
-        <h1>ELI5.ai</h1>
-        <p>Complex topics made simple - Your friendly AI tutor!</p>
-      </div>
+      <header class="header">
+        <h1 class="logo">ELI5.ai</h1>
+        <p class="tagline">Complex concepts, simplified by AI</p>
+      </header>
 
-      <div class="input-section">
-        <label for="topic">What would you like to learn about?</label>
-        <textarea
-          id="topic"
-          placeholder="e.g., How do black holes work? What is quantum computing? Why is the sky blue?"
-        ></textarea>
-      </div>
+      <div class="main-card">
+        <div class="input-group">
+          <label for="topic">What would you like to understand?</label>
+          <textarea
+            id="topic"
+            placeholder="e.g., How does quantum computing work? Explain blockchain technology..."
+          ></textarea>
+        </div>
 
-      <div class="complexity-section">
-        <label>How simple should the explanation be?</label>
-        <div class="complexity-buttons">
-          <button class="complexity-btn active" data-level="eli5">
-            👶 Like I'm 5
-          </button>
-          <button class="complexity-btn" data-level="eli10">
-            🧒 Like I'm 10
-          </button>
-          <button class="complexity-btn" data-level="teen">
-            🎓 Teen Level
-          </button>
-          <button class="complexity-btn" data-level="college">
-            🎯 College
-          </button>
-          <button class="complexity-btn" data-level="expert">🚀 Expert</button>
+        <div class="input-group">
+          <label>Explanation complexity</label>
+          <div class="complexity-grid">
+            <button class="complexity-btn active" data-level="eli5">
+              Age 5
+            </button>
+            <button class="complexity-btn" data-level="eli10">Age 10</button>
+            <button class="complexity-btn" data-level="teen">Teen</button>
+            <button class="complexity-btn" data-level="college">College</button>
+            <button class="complexity-btn" data-level="expert">Expert</button>
+          </div>
+        </div>
+
+        <button class="submit-btn" id="explainBtn">Generate Explanation</button>
+
+        <div class="loading" id="loading">
+          <div class="loader"></div>
+          <p class="loading-text">AI is thinking...</p>
+        </div>
+
+        <div class="error" id="error"></div>
+
+        <div class="result-card" id="result">
+          <div class="result-header">
+            <span class="result-title">Your Explanation</span>
+            <span class="token-badge" id="tokens">0 tokens</span>
+          </div>
+          <div class="explanation-text" id="explanation"></div>
         </div>
       </div>
 
-      <button class="explain-btn" id="explainBtn">🎯 Explain It To Me!</button>
-
-      <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <p>AI is thinking... 🤔</p>
-      </div>
-
-      <div class="error" id="error"></div>
-
-      <div class="result-section" id="result">
-        <div class="result-header">
-          <div class="result-title">📚 Your Explanation:</div>
-          <div class="tokens-badge" id="tokens">0 tokens</div>
-        </div>
-        <div class="explanation" id="explanation"></div>
-      </div>
-
-      <div class="footer">
-        Made with ❤️ using FastAPI + OpenAI • Your SaaS Project 🚀
-      </div>
+      <footer class="footer">Built with FastAPI • OpenAI • Docker</footer>
     </div>
 
     <script>
-      // Get all the elements we need
       const topicInput = document.getElementById("topic");
       const explainBtn = document.getElementById("explainBtn");
       const loading = document.getElementById("loading");
@@ -308,42 +444,30 @@
       const tokensDisplay = document.getElementById("tokens");
       const complexityButtons = document.querySelectorAll(".complexity-btn");
 
-      // Keep track of selected complexity
       let selectedComplexity = "eli5";
 
-      // Handle complexity button clicks
       complexityButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
-          // Remove active class from all buttons
           complexityButtons.forEach((b) => b.classList.remove("active"));
-          // Add active class to clicked button
           btn.classList.add("active");
-          // Update selected complexity
           selectedComplexity = btn.dataset.level;
         });
       });
 
-      // Handle explain button click
       explainBtn.addEventListener("click", async () => {
-        // Get the topic
         const topic = topicInput.value.trim();
 
-        // Validate input
         if (!topic) {
-          showError("Please enter a topic you want to learn about!");
+          showError("Please enter a topic to learn about");
           return;
         }
 
-        // Hide error and result
         hideError();
         hideResult();
-
-        // Show loading
         showLoading();
         explainBtn.disabled = true;
 
         try {
-          // Call the backend API
           const response = await fetch("http://localhost:8000/explain", {
             method: "POST",
             headers: {
@@ -358,23 +482,20 @@
           const data = await response.json();
 
           if (!response.ok) {
-            throw new Error(data.detail || "Something went wrong!");
+            throw new Error(data.detail || "Something went wrong");
           }
 
-          // Show the result
           explanation.textContent = data.explanation;
           tokensDisplay.textContent = `${data.tokens_used} tokens`;
           showResult();
         } catch (err) {
-          showError("Oops! " + err.message);
+          showError(err.message);
         } finally {
-          // Hide loading and re-enable button
           hideLoading();
           explainBtn.disabled = false;
         }
       });
 
-      // Allow pressing Enter to submit (with Shift+Enter for new line)
       topicInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
           e.preventDefault();
@@ -382,7 +503,6 @@
         }
       });
 
-      // Helper functions
       function showLoading() {
         loading.classList.add("show");
       }
