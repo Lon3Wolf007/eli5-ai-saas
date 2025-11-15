@@ -2,265 +2,159 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ELI5.ai - AI Learning Assistant</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>ELI5.ai</title>
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
       }
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-          "Helvetica", "Arial", sans-serif;
-        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+          sans-serif;
+        background: #000;
         color: #fff;
         min-height: 100vh;
+        padding: 16px;
         overflow-x: hidden;
       }
 
-      .background-grid {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: linear-gradient(
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-          ),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-        background-size: 50px 50px;
-        z-index: 0;
-        pointer-events: none;
-      }
-
-      .glow {
-        position: fixed;
-        width: 600px;
-        height: 600px;
-        background: radial-gradient(
-          circle,
-          rgba(0, 122, 255, 0.15) 0%,
-          transparent 70%
-        );
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 1;
-        animation: float 20s ease-in-out infinite;
-      }
-
-      .glow:nth-child(2) {
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(
-          circle,
-          rgba(88, 86, 214, 0.1) 0%,
-          transparent 70%
-        );
-        animation-delay: -10s;
-        animation-duration: 15s;
-        right: 0;
-        top: 50%;
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translate(0, 0);
-        }
-        25% {
-          transform: translate(100px, -100px);
-        }
-        50% {
-          transform: translate(-50px, 100px);
-        }
-        75% {
-          transform: translate(150px, 50px);
-        }
-      }
-
       .container {
-        position: relative;
-        z-index: 2;
-        max-width: 900px;
+        max-width: 600px;
         margin: 0 auto;
-        padding: 60px 20px;
+        padding-top: 20px;
       }
 
       .header {
         text-align: center;
-        margin-bottom: 60px;
-        animation: fadeInUp 0.8s ease;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        margin-bottom: 32px;
       }
 
       .logo {
-        font-size: 2.5em;
+        font-size: 32px;
         font-weight: 700;
         background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
-        margin-bottom: 16px;
-        letter-spacing: -1px;
+        margin-bottom: 8px;
       }
 
       .tagline {
-        font-size: 1.2em;
-        color: rgba(255, 255, 255, 0.6);
-        font-weight: 400;
-        letter-spacing: -0.3px;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
       }
 
-      .main-card {
+      .card {
         background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 24px;
-        padding: 48px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        animation: fadeInUp 0.8s ease 0.2s both;
-      }
-
-      .input-group {
-        margin-bottom: 32px;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
       }
 
       label {
         display: block;
-        font-size: 0.95em;
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 12px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 8px;
         font-weight: 500;
-        letter-spacing: -0.2px;
       }
 
       textarea {
         width: 100%;
-        padding: 16px 20px;
+        padding: 14px;
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
+        border-radius: 10px;
         color: #fff;
-        font-size: 1em;
+        font-size: 15px;
         font-family: inherit;
         resize: none;
-        min-height: 120px;
-        transition: all 0.3s ease;
+        min-height: 80px;
       }
 
       textarea:focus {
         outline: none;
         background: rgba(255, 255, 255, 0.12);
         border-color: #007aff;
-        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
       }
 
       textarea::placeholder {
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(255, 255, 255, 0.3);
       }
 
       .complexity-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-        margin-bottom: 32px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 12px;
       }
 
       .complexity-btn {
-        padding: 14px 20px;
+        padding: 12px 8px;
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 0.9em;
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 13px;
         font-weight: 500;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.2s;
         text-align: center;
-      }
-
-      .complexity-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
-        transform: translateY(-2px);
       }
 
       .complexity-btn.active {
         background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
         border-color: transparent;
         color: #fff;
-        box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
       }
 
       .submit-btn {
         width: 100%;
-        padding: 18px;
+        padding: 16px;
         background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
         border: none;
-        border-radius: 12px;
+        border-radius: 10px;
         color: #fff;
-        font-size: 1.05em;
+        font-size: 16px;
         font-weight: 600;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        letter-spacing: -0.2px;
+        margin-top: 16px;
       }
 
-      .submit-btn:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4);
-      }
-
-      .submit-btn:active:not(:disabled) {
-        transform: translateY(0);
+      .submit-btn:active {
+        opacity: 0.8;
       }
 
       .submit-btn:disabled {
         opacity: 0.5;
-        cursor: not-allowed;
       }
 
       .loading {
         text-align: center;
-        padding: 40px;
+        padding: 30px;
         display: none;
       }
 
       .loading.show {
         display: block;
-        animation: fadeIn 0.3s ease;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
       }
 
       .loader {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         border: 3px solid rgba(255, 255, 255, 0.1);
         border-top-color: #007aff;
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
-        margin: 0 auto 16px;
+        margin: 0 auto 12px;
       }
 
       @keyframes spin {
@@ -270,74 +164,49 @@
       }
 
       .loading-text {
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 0.95em;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 14px;
       }
 
       .error {
         background: rgba(255, 59, 48, 0.15);
         border: 1px solid rgba(255, 59, 48, 0.3);
         color: #ff3b30;
-        padding: 16px 20px;
-        border-radius: 12px;
-        margin-top: 20px;
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 12px;
         display: none;
-        animation: shake 0.5s ease;
+        font-size: 14px;
       }
 
       .error.show {
         display: block;
       }
 
-      @keyframes shake {
-        0%,
-        100% {
-          transform: translateX(0);
-        }
-        25% {
-          transform: translateX(-10px);
-        }
-        75% {
-          transform: translateX(10px);
-        }
-      }
-
       .result-card {
-        margin-top: 32px;
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
-        padding: 32px;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 16px;
         display: none;
       }
 
       .result-card.show {
         display: block;
-        animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
       }
 
       .result-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 24px;
-        padding-bottom: 16px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       }
 
       .result-title {
-        font-size: 1.1em;
+        font-size: 15px;
         font-weight: 600;
         color: rgba(255, 255, 255, 0.9);
       }
@@ -345,93 +214,92 @@
       .token-badge {
         background: rgba(0, 122, 255, 0.15);
         color: #007aff;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 0.85em;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 12px;
         font-weight: 500;
       }
 
       .explanation-text {
         color: rgba(255, 255, 255, 0.8);
-        line-height: 1.8;
-        font-size: 1.02em;
-        letter-spacing: -0.1px;
+        line-height: 1.7;
+        font-size: 15px;
+        white-space: pre-wrap;
+      }
+
+      .explanation-text p {
+        margin-bottom: 12px;
       }
 
       .footer {
         text-align: center;
-        margin-top: 48px;
-        color: rgba(255, 255, 255, 0.4);
-        font-size: 0.9em;
+        margin-top: 32px;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 12px;
+        padding-bottom: 20px;
       }
 
-      @media (max-width: 768px) {
-        .main-card {
-          padding: 32px 24px;
-        }
-
-        .complexity-grid {
-          grid-template-columns: repeat(2, 1fr);
+      @media (min-width: 768px) {
+        .container {
+          padding-top: 60px;
         }
 
         .logo {
-          font-size: 2em;
+          font-size: 40px;
+        }
+
+        .complexity-grid {
+          grid-template-columns: repeat(5, 1fr);
+        }
+
+        .card {
+          padding: 32px;
         }
       }
     </style>
   </head>
   <body>
-    <div class="background-grid"></div>
-    <div class="glow"></div>
-    <div class="glow"></div>
-
     <div class="container">
       <header class="header">
         <h1 class="logo">ELI5.ai</h1>
-        <p class="tagline">Complex concepts, simplified by AI</p>
+        <p class="tagline">AI Learning Assistant</p>
       </header>
 
-      <div class="main-card">
-        <div class="input-group">
-          <label for="topic">What would you like to understand?</label>
-          <textarea
-            id="topic"
-            placeholder="e.g., How does quantum computing work? Explain blockchain technology..."
-          ></textarea>
+      <div class="card">
+        <label for="topic">What do you want to learn?</label>
+        <textarea
+          id="topic"
+          placeholder="e.g., quantum computing, photosynthesis..."
+        ></textarea>
+
+        <label style="margin-top: 20px">Complexity</label>
+        <div class="complexity-grid">
+          <button class="complexity-btn active" data-level="eli5">5yo</button>
+          <button class="complexity-btn" data-level="eli10">10yo</button>
+          <button class="complexity-btn" data-level="teen">Teen</button>
+          <button class="complexity-btn" data-level="college">College</button>
+          <button class="complexity-btn" data-level="expert">Expert</button>
         </div>
 
-        <div class="input-group">
-          <label>Explanation complexity</label>
-          <div class="complexity-grid">
-            <button class="complexity-btn active" data-level="eli5">
-              Age 5
-            </button>
-            <button class="complexity-btn" data-level="eli10">Age 10</button>
-            <button class="complexity-btn" data-level="teen">Teen</button>
-            <button class="complexity-btn" data-level="college">College</button>
-            <button class="complexity-btn" data-level="expert">Expert</button>
-          </div>
-        </div>
-
-        <button class="submit-btn" id="explainBtn">Generate Explanation</button>
+        <button class="submit-btn" id="explainBtn">Explain</button>
 
         <div class="loading" id="loading">
           <div class="loader"></div>
-          <p class="loading-text">AI is thinking...</p>
+          <p class="loading-text">Thinking...</p>
         </div>
 
         <div class="error" id="error"></div>
-
-        <div class="result-card" id="result">
-          <div class="result-header">
-            <span class="result-title">Your Explanation</span>
-            <span class="token-badge" id="tokens">0 tokens</span>
-          </div>
-          <div class="explanation-text" id="explanation"></div>
-        </div>
       </div>
 
-      <footer class="footer">Built with FastAPI • OpenAI • Docker</footer>
+      <div class="result-card" id="result">
+        <div class="result-header">
+          <span class="result-title">Answer</span>
+          <span class="token-badge" id="tokens">0 tokens</span>
+        </div>
+        <div class="explanation-text" id="explanation"></div>
+      </div>
+
+      <footer class="footer">FastAPI • OpenAI • Docker</footer>
     </div>
 
     <script>
@@ -458,7 +326,7 @@
         const topic = topicInput.value.trim();
 
         if (!topic) {
-          showError("Please enter a topic to learn about");
+          showError("Enter a topic");
           return;
         }
 
@@ -482,7 +350,7 @@
           const data = await response.json();
 
           if (!response.ok) {
-            throw new Error(data.detail || "Something went wrong");
+            throw new Error(data.detail || "Error occurred");
           }
 
           explanation.textContent = data.explanation;

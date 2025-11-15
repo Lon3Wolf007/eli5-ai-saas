@@ -33,7 +33,7 @@ async def root():
     return {
         "message": "Welcome to ELI5.ai API!",
         "status": "Server is running 🚀",
-        "model": "GPT-4o-mini (Fast & Reliable)",
+        "model": "GPT-4o-mini (Optimized)",
         "endpoints": {
             "/explain": "POST - Get ELI5 explanation",
             "/health": "GET - Check server health"
@@ -65,18 +65,35 @@ async def explain_topic(request: ExplainRequest):
             detail="Please provide a topic to explain"
         )
     
-    complexity_prompts = {
-        "eli5": "Explain this like I'm 5 years old, using very simple words and fun examples:",
-        "eli10": "Explain this like I'm 10 years old, using clear language and relatable examples:",
-        "teen": "Explain this like I'm a teenager, with some detail but still easy to understand:",
-        "college": "Explain this at a college level with proper terminology:",
-        "expert": "Explain this with full technical detail for an expert:"
+    complexity_configs = {
+        "eli5": {
+            "instruction": "Explain in 2-3 short sentences using simple words a 5-year-old would understand. Use a fun analogy.",
+            "max_tokens": 150,
+            "temperature": 0.7
+        },
+        "eli10": {
+            "instruction": "Explain in 3-4 sentences for a 10-year-old. Use clear, relatable examples. Break into 2 short paragraphs.",
+            "max_tokens": 200,
+            "temperature": 0.7
+        },
+        "teen": {
+            "instruction": "Explain in 4-5 sentences for a teenager. Include some detail but keep it interesting. Use 2 paragraphs.",
+            "max_tokens": 250,
+            "temperature": 0.7
+        },
+        "college": {
+            "instruction": "Provide a concise college-level explanation in 5-6 sentences. Use proper terminology. Structure in 2-3 short paragraphs.",
+            "max_tokens": 300,
+            "temperature": 0.6
+        },
+        "expert": {
+            "instruction": "Provide an expert-level technical explanation using advanced terminology, academic language, and field-specific jargon. Be precise and sophisticated. 3 paragraphs max. Sound impressive and authoritative.",
+            "max_tokens": 350,
+            "temperature": 0.5
+        }
     }
     
-    complexity_instruction = complexity_prompts.get(
-        request.complexity,
-        complexity_prompts["eli5"]
-    )
+    config = complexity_configs.get(request.complexity, complexity_configs["eli5"])
     
     try:
         response = client.chat.completions.create(
@@ -84,18 +101,18 @@ async def explain_topic(request: ExplainRequest):
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a friendly AI tutor that explains complex topics in simple, engaging ways. Use analogies, examples, and a conversational tone."
+                    "content": "You are a concise AI tutor. Keep explanations SHORT and TO THE POINT. Always break longer answers into short paragraphs for readability. No fluff or unnecessary details."
                 },
                 {
                     "role": "user",
-                    "content": f"{complexity_instruction}\n\nTopic: {request.topic}\n\nPlease provide a clear, engaging explanation with examples. Keep it friendly and conversational!"
+                    "content": f"{config['instruction']}\n\nTopic: {request.topic}\n\nBe concise and clear. Use paragraph breaks for readability."
                 }
             ],
-            max_tokens=1024,
-            temperature=0.7
+            max_tokens=config["max_tokens"],
+            temperature=config["temperature"]
         )
         
-        explanation = response.choices[0].message.content
+        explanation = response.choices[0].message.content.strip()
         
         return {
             "success": True,
@@ -116,9 +133,9 @@ async def explain_topic(request: ExplainRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 Starting ELI5.ai Backend Server...")
+    print("🚀 Starting ELI5.ai Backend Server (OPTIMIZED)...")
     print("📍 Server will run on: http://localhost:8000")
     print("📖 API docs available at: http://localhost:8000/docs")
-    print("🤖 Using OpenAI GPT-4o-mini - Fast & Reliable!")
-    print("💰 ~$0.0015 per explanation (your $5 = ~3,300 explanations!)")
+    print("🤖 Using OpenAI GPT-4o-mini - Optimized for cost!")
+    print("💰 Reduced tokens = More explanations per dollar!")
     uvicorn.run(app, host="0.0.0.0", port=8000)
