@@ -67,7 +67,7 @@ async def explain_topic(request: ExplainRequest):
     
     complexity_configs = {
         "eli5": {
-            "instruction": "Explain in 2-3 short sentences using simple words a 5-year-old would understand. Use a fun analogy.",
+            "instruction": "Explain in 5-10 sentences using simple words a 5-year-old would understand. Use a fun analogy.",
             "max_tokens": 150,
             "temperature": 0.7
         },
