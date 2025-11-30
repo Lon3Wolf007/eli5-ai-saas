@@ -2,10 +2,6 @@
 
 > A production-ready SaaS application that explains complex topics at multiple complexity levels using OpenAI's GPT-4o-mini, featuring cost-optimized API usage, mobile-first design, and containerized deployment.
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live-Demo-blue?style=for-the-badge)](# ELI5.ai - AI-Powered Learning Assistant
-
-> A production-ready SaaS application that explains complex topics at multiple complexity levels using OpenAI's GPT-4o-mini, featuring cost-optimized API usage, mobile-first design, and containerized deployment.
-
 [![Live Demo](https://img.shields.io/badge/🌐_Live-Demo-blue?style=for-the-badge)](https://eli5-frontend.onrender.com/)
 [![GitHub](https://img.shields.io/badge/GitHub-Repo-black?style=for-the-badge&logo=github)](https://github.com/Lon3Wolf007/eli5-ai-saas)
 
