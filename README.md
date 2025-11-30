@@ -25,7 +25,7 @@ ELI5.ai (Explain Like I'm 5) is a full-stack web application that makes complex 
 
 ## 🚀 Live Demo
 
-**Try it now:** [YOUR-FRONTEND-URL-HERE](YOUR-FRONTEND-URL-HERE)
+**Try it now:** [YOUR-FRONTEND-URL-HERE](https://eli5-frontend.onrender.com/)
 
 **Example queries:**
 
